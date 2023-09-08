@@ -15,4 +15,6 @@ public class SignupRequestDto {
     @Size(min = 8, max = 16)
     private String password;
 
+    private boolean admin = false;
+    private String adminToken = "";
 }

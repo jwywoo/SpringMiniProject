@@ -19,7 +19,12 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    public Member(String username, String password) {
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private MemberRoleEnum role;
+
+
+    public Member(String username, String password, MemberRoleEnum role) {
         this.username = username;
         this.password = password;
     }
