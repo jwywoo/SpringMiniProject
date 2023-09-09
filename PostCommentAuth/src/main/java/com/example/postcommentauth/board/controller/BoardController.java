@@ -8,10 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -26,7 +25,15 @@ public class BoardController {
     }
     // Board Read
     // List
+    @GetMapping("/boards")
+    public ResponseEntity<List<BoardResponseDto>> boardList() {
+        return ResponseEntity.ok(boardService.boardList());
+    }
     // Detail
+    @GetMapping("/board/{ID}")
+    public ResponseEntity<BoardResponseDto> boardDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(boardService.boardDetail(id));
+    }
     // Board Update
     // Board Delete
 

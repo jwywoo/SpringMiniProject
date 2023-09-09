@@ -6,10 +6,13 @@ import com.example.postcommentauth.board.entity.Board;
 import com.example.postcommentauth.board.repository.BoardRepository;
 import com.example.postcommentauth.common.JwtUtil;
 import io.jsonwebtoken.Claims;
+import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,21 @@ public class BoardService {
         }
         Board newBoard = new Board(requestDto, userinfo.getSubject());
         return new BoardResponseDto(boardRepository.save(newBoard));
+    }
+
+    public List<BoardResponseDto> boardList() {
+        return boardRepository.findAllByOrderByModifiedAtDesc().stream().map(BoardResponseDto::new).toList();
+    }
+
+    public BoardResponseDto boardDetail(Long id) {
+        return new BoardResponseDto(findById(id));
+    }
+
+
+    private Board findById(Long id) {
+        return boardRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("유요하지 않은 정보입니다.")
+        );
     }
 
     private Claims userInfo(HttpServletRequest req) {
