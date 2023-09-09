@@ -1,5 +1,6 @@
 package com.example.postcommentauth.comment.entity;
 
+import com.example.postcommentauth.comment.dto.CommentRequestDto;
 import com.example.postcommentauth.common.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,4 +18,14 @@ public class Comment extends Timestamped {
     private String username;
     @Column(name = "content", nullable = false, length = 500)
     private String content;
+
+    public Comment(CommentRequestDto requestDto, String username) {
+        this.username = username;
+        this.content = requestDto.getContent();
+    }
+
+    public void update(CommentRequestDto requestDto, String username) {
+        this.content = requestDto.getContent();
+        this.username = username;
+    }
 }
