@@ -5,6 +5,7 @@ import com.example.postcommentauth.board.dto.BoardResponseDto;
 import com.example.postcommentauth.board.entity.Board;
 import com.example.postcommentauth.board.repository.BoardRepository;
 import com.example.postcommentauth.common.JwtUtil;
+import com.example.postcommentauth.common.dto.StringResponseDto;
 import io.jsonwebtoken.Claims;
 import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpServletRequest;
@@ -48,6 +49,17 @@ public class BoardService {
             throw new IllegalArgumentException("회원 정보가 유요하지 않습니다.");
         }
         return new BoardResponseDto(board);
+    }
+
+    public StringResponseDto boarDelete(Long id, HttpServletRequest req) {
+        Claims userInfo = userInfo(req);
+        Board board = findById(id);
+        if (userInfo.getSubject().equals(board.getUsername())) {
+            boardRepository.delete(board);
+            return new StringResponseDto("삭제성공", "200");
+        } else {
+            throw new IllegalArgumentException("회원 정보가 유요하지 않습니다.");
+        }
     }
 
     private Board findById(Long id) {

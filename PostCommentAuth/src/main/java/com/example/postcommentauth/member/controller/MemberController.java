@@ -2,9 +2,8 @@ package com.example.postcommentauth.member.controller;
 
 import com.example.postcommentauth.member.dto.LoginRequestDto;
 import com.example.postcommentauth.member.dto.SignupRequestDto;
-import com.example.postcommentauth.member.dto.StringResponseDto;
+import com.example.postcommentauth.common.dto.StringResponseDto;
 import com.example.postcommentauth.member.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

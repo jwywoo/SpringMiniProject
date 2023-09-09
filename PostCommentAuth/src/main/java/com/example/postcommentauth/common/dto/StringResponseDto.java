@@ -1,4 +1,4 @@
-package com.example.postcommentauth.member.dto;
+package com.example.postcommentauth.common.dto;
 
 import lombok.Getter;
 

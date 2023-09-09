@@ -3,7 +3,7 @@ package com.example.postcommentauth.member.service;
 import com.example.postcommentauth.common.JwtUtil;
 import com.example.postcommentauth.member.dto.LoginRequestDto;
 import com.example.postcommentauth.member.dto.SignupRequestDto;
-import com.example.postcommentauth.member.dto.StringResponseDto;
+import com.example.postcommentauth.common.dto.StringResponseDto;
 import com.example.postcommentauth.member.entity.Member;
 import com.example.postcommentauth.member.entity.MemberRoleEnum;
 import com.example.postcommentauth.member.repository.MemberRepository;

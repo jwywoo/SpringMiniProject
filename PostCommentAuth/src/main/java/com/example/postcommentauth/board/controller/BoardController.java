@@ -4,6 +4,7 @@ import com.example.postcommentauth.board.dto.BoardRequestDto;
 import com.example.postcommentauth.board.dto.BoardResponseDto;
 import com.example.postcommentauth.board.service.BoardService;
 import com.example.postcommentauth.common.JwtUtil;
+import com.example.postcommentauth.common.dto.StringResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,17 +33,19 @@ public class BoardController {
     }
 
     // Detail
-    @GetMapping("/board/{ID}")
+    @GetMapping("/board/{id}")
     public ResponseEntity<BoardResponseDto> boardDetail(@PathVariable Long id) {
         return ResponseEntity.ok(boardService.boardDetail(id));
     }
 
     // Board Update
-    @PutMapping("/board/{ID}")
+    @PutMapping("/board/{id}")
     public ResponseEntity<BoardResponseDto> boardUpdate(@PathVariable Long id, @RequestBody BoardRequestDto requestDto, HttpServletRequest req) {
         return ResponseEntity.ok(boardService.boardUpdate(id,requestDto, req));
-}
-// Board Delete
-
-
+    }
+    // Board Delete
+    @DeleteMapping("/board/{id}")
+    public ResponseEntity<StringResponseDto> boardDelete(@PathVariable Long id, HttpServletRequest req) {
+        return ResponseEntity.ok(boardService.boarDelete(id, req));
+    }
 }
