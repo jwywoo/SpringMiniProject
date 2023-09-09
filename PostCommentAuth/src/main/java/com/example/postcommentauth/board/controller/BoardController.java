@@ -23,19 +23,26 @@ public class BoardController {
     public ResponseEntity<BoardResponseDto> boardCreate(@RequestBody BoardRequestDto requestDto, HttpServletRequest req) {
         return ResponseEntity.ok(boardService.boardCreate(requestDto, req));
     }
+
     // Board Read
     // List
     @GetMapping("/boards")
     public ResponseEntity<List<BoardResponseDto>> boardList() {
         return ResponseEntity.ok(boardService.boardList());
     }
+
     // Detail
     @GetMapping("/board/{ID}")
     public ResponseEntity<BoardResponseDto> boardDetail(@PathVariable Long id) {
         return ResponseEntity.ok(boardService.boardDetail(id));
     }
+
     // Board Update
-    // Board Delete
+    @PutMapping("/board/{ID}")
+    public ResponseEntity<BoardResponseDto> boardUpdate(@PathVariable Long id, @RequestBody BoardRequestDto requestDto, HttpServletRequest req) {
+        return ResponseEntity.ok(boardService.boardUpdate(id,requestDto, req));
+}
+// Board Delete
 
 
 }

@@ -8,6 +8,7 @@ import com.example.postcommentauth.common.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,17 @@ public class BoardService {
         return new BoardResponseDto(findById(id));
     }
 
+    @Transactional
+    public BoardResponseDto boardUpdate(Long id, BoardRequestDto requestDto, HttpServletRequest req) {
+        Claims userInfo = userInfo(req);
+        Board board = findById(id);
+        if (userInfo.getSubject().equals(board.getUsername())) {
+            board.update(requestDto, userInfo.getSubject());
+        } else {
+            throw new IllegalArgumentException("회원 정보가 유요하지 않습니다.");
+        }
+        return new BoardResponseDto(board);
+    }
 
     private Board findById(Long id) {
         return boardRepository.findById(id).orElseThrow(

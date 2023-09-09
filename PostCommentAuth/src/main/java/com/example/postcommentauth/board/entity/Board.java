@@ -25,4 +25,10 @@ public class Board {
         this.content = requestDto.getContent();
         this.username = username;
     }
+
+    public void update(BoardRequestDto requestDto, String username) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.username = username;
+    }
 }
