@@ -1,6 +1,7 @@
 package com.example.postcommentauth.board.entity;
 
 import com.example.postcommentauth.board.dto.BoardRequestDto;
+import com.example.postcommentauth.common.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name="board")
 @NoArgsConstructor
-public class Board {
+public class Board extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

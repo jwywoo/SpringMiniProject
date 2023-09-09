@@ -1,4 +1,4 @@
-package com.example.postcommentauth.board.entity;
+package com.example.postcommentauth.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
