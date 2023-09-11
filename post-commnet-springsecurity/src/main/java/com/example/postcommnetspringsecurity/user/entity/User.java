@@ -1,9 +1,11 @@
 package com.example.postcommnetspringsecurity.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class User {
     @Id
