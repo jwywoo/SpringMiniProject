@@ -25,6 +25,7 @@ public class MemberService {
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     public StringResponseDto signup(SignupRequestDto requestDto) {
+        System.out.println("service");
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="member")
+@Table(name="members")
 @Getter
 @NoArgsConstructor
 public class Member {
@@ -27,5 +27,6 @@ public class Member {
     public Member(String username, String password, MemberRoleEnum role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 }

@@ -1,10 +1,12 @@
 package com.example.postcommentauth.comment.entity;
 
+import com.example.postcommentauth.board.entity.Board;
 import com.example.postcommentauth.comment.dto.CommentRequestDto;
 import com.example.postcommentauth.common.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 @Entity
 @Getter
@@ -19,6 +21,10 @@ public class Comment extends Timestamped {
     @Column(name = "content", nullable = false, length = 500)
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="board_id", nullable = false)
+    private Board board;
+
     public Comment(CommentRequestDto requestDto, String username) {
         this.username = username;
         this.content = requestDto.getContent();
@@ -27,5 +33,9 @@ public class Comment extends Timestamped {
     public void update(CommentRequestDto requestDto, String username) {
         this.content = requestDto.getContent();
         this.username = username;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }

@@ -21,6 +21,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<StringResponseDto> signup(@Valid @RequestBody SignupRequestDto requestDto) {
+        System.out.println("controller");
         return ResponseEntity.ok(memberService.signup(requestDto));
     }
 

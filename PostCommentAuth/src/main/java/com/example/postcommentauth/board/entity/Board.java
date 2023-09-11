@@ -1,10 +1,14 @@
 package com.example.postcommentauth.board.entity;
 
 import com.example.postcommentauth.board.dto.BoardRequestDto;
+import com.example.postcommentauth.comment.entity.Comment;
 import com.example.postcommentauth.common.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,6 +25,10 @@ public class Board extends Timestamped {
     @Column(name = "content", nullable = false, length = 500)
     private String content;
 
+    @OneToMany(mappedBy = "board", orphanRemoval = true, fetch = FetchType.LAZY)
+    List<Comment> commentList = new ArrayList<>();
+
+
     public Board(BoardRequestDto requestDto, String username) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
@@ -31,5 +39,10 @@ public class Board extends Timestamped {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.username = username;
+    }
+
+    public void addComment(Comment newComment) {
+        this.commentList.add(newComment);
+        newComment.setBoard(this);
     }
 }

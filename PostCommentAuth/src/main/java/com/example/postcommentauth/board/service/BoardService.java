@@ -6,6 +6,9 @@ import com.example.postcommentauth.board.entity.Board;
 import com.example.postcommentauth.board.repository.BoardRepository;
 import com.example.postcommentauth.common.JwtUtil;
 import com.example.postcommentauth.common.dto.StringResponseDto;
+import com.example.postcommentauth.member.entity.Member;
+import com.example.postcommentauth.member.entity.MemberRoleEnum;
+import com.example.postcommentauth.member.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +22,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BoardService {
-
+    private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
     private final JwtUtil jwtUtil;
     public BoardResponseDto boardCreate(BoardRequestDto requestDto, HttpServletRequest req) {
@@ -42,23 +45,38 @@ public class BoardService {
     @Transactional
     public BoardResponseDto boardUpdate(Long id, BoardRequestDto requestDto, HttpServletRequest req) {
         Claims userInfo = userInfo(req);
+        Member member = memberRepository.findByUsername(userInfo.getSubject()).orElseThrow(
+                () -> new IllegalArgumentException("유효하지 않은 회원정보입니다.")
+        );
         Board board = findById(id);
-        if (userInfo.getSubject().equals(board.getUsername())) {
+        if (member.getRole() == MemberRoleEnum.ADMIN) {
             board.update(requestDto, userInfo.getSubject());
         } else {
-            throw new IllegalArgumentException("회원 정보가 유요하지 않습니다.");
+            if (userInfo.getSubject().equals(board.getUsername())) {
+                board.update(requestDto, userInfo.getSubject());
+            } else {
+                throw new IllegalArgumentException("회원 정보가 유요하지 않습니다.");
+            }
         }
         return new BoardResponseDto(board);
     }
 
     public StringResponseDto boarDelete(Long id, HttpServletRequest req) {
         Claims userInfo = userInfo(req);
+        Member member = memberRepository.findByUsername(userInfo.getSubject()).orElseThrow(
+                () -> new IllegalArgumentException("유효하지 않은 회원정보입니다.")
+        );
         Board board = findById(id);
-        if (userInfo.getSubject().equals(board.getUsername())) {
+        if (member.getRole() == MemberRoleEnum.ADMIN) {
             boardRepository.delete(board);
             return new StringResponseDto("삭제성공", "200");
         } else {
-            throw new IllegalArgumentException("회원 정보가 유요하지 않습니다.");
+            if (userInfo.getSubject().equals(board.getUsername())) {
+                boardRepository.delete(board);
+                return new StringResponseDto("삭제성공", "200");
+            } else {
+                throw new IllegalArgumentException("회원 정보가 유요하지 않습니다.");
+            }
         }
     }
 
