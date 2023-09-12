@@ -1,4 +1,4 @@
-package com.example.postcommnetspringsecurity.user.filter;
+package com.example.postcommnetspringsecurity.common.filter;
 
 import com.example.postcommnetspringsecurity.common.jwt.JwtUtil;
 import com.example.postcommnetspringsecurity.common.security.UserDetailsImpl;
@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -32,7 +33,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
-
+            System.out.println(requestDto.getUsername());
+            System.out.println(requestDto.getPassword());
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
                             requestDto.getUsername(),
@@ -50,8 +52,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
         String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
         UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
-
         String token = jwtUtil.createToken(username, role);
+        log.info("로그인 성공");
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
     }
 

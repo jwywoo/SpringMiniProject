@@ -1,4 +1,4 @@
-package com.example.postcommnetspringsecurity.user.filter;
+package com.example.postcommnetspringsecurity.common.filter;
 
 import com.example.postcommnetspringsecurity.common.jwt.JwtUtil;
 import com.example.postcommnetspringsecurity.common.security.UserDetailsServiceImpl;
@@ -45,6 +45,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         String tokenValue = jwtUtil.getJwtFromHeader(req);
+
         if (StringUtils.hasText(tokenValue)) {
 
             if (!jwtUtil.validateToken(tokenValue)) {
@@ -61,7 +62,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
         }
-
         filterChain.doFilter(req, res);
     }
 
