@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,11 +29,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        try {
+    public Authentication attemptAuthentication (HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
+        log.info("로그인 시도");
+        try{
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDto.class);
-            System.out.println(requestDto.getUsername());
-            System.out.println(requestDto.getPassword());
+
+            System.out.println("requestDto.getUsername() = " + requestDto.getUsername());
+            System.out.println("requestDto.getPassword() = " + requestDto.getPassword());
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
                             requestDto.getUsername(),
@@ -42,7 +43,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             null
                     )
             );
-        } catch (IOException e) {
+        }catch (IOException e){
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
@@ -57,8 +58,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
     }
 
+//    @Override
+//    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
+//        response.setStatus(401);
+//    }
+
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException fail) {
+        log.info("로그인 실패..");
+        fail.getCause();
         response.setStatus(401);
     }
 }
